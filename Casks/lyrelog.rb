@@ -4,21 +4,21 @@ cask "lyrelog" do
 
   on_macos do
     on_arm do
-      sha256 "b6297ca764514b00a5048825dca8685bbacc3a5f083850763c00d3a9da8ec11b"
+      sha256 "aec219f0a0796592c4683b7bad26ebe83a283bb0e3f94bbd4f5f7972e58bc24b"
       url "https://github.com/lyrelog/lyrelog-cli/releases/download/v#{version}/lyrelog_#{version}_darwin_arm64.tar.gz"
     end
     on_intel do
-      sha256 "091da55bee72f549a5d54743d17a88de37ce9907ecec15026d34490313c8e1d9"
+      sha256 "bb001dd5c2c5a99d64a5469589e971af6a1a66aca3d80ea590c95e3862550079"
       url "https://github.com/lyrelog/lyrelog-cli/releases/download/v#{version}/lyrelog_#{version}_darwin_amd64.tar.gz"
     end
   end
   on_linux do
     on_arm do
-      sha256 "8a258f238752cb51fe2887b486b6107c820a72fc27b8a947b6996bb4ccfe8b6e"
+      sha256 "562e44e10b06deddf0163f54d39c4e90adb443feb46a4180f5aeb7b59c36aa39"
       url "https://github.com/lyrelog/lyrelog-cli/releases/download/v#{version}/lyrelog_#{version}_linux_arm64.tar.gz"
     end
     on_intel do
-      sha256 "ab6e06cfc10b6a5ba7c9131ddbfcbc8b629d558a7f043073fe4bf5746f9ef34b"
+      sha256 "fcdc74ff982295381f1b70cb0a44461b758b58aa7fdc630d9c4e42e5e2933c04"
       url "https://github.com/lyrelog/lyrelog-cli/releases/download/v#{version}/lyrelog_#{version}_linux_amd64.tar.gz"
     end
   end
@@ -33,8 +33,10 @@ cask "lyrelog" do
 
   binary "lyrelog"
 
-  postflight_steps do
-    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{staged_path}}/lyrelog"]
+  postflight do
+    if OS.mac?
+      system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/lyrelog"]
+    end
   end
 
   zap :not_required
